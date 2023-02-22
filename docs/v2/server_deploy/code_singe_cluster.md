@@ -1,4 +1,4 @@
-# 聊球IM集群（非k8s）部署文档
+# IM集群（非k8s）部署文档
 
 自行部署etcd/zookeeper/mysql/kafka/mongo/redis集群，可以根据此性能评估服务器需求。
 
@@ -34,8 +34,8 @@
 #### （1）下载代码及编译
 
 ```
-git clone http://47.57.247.15:3000/liaoqiuadmin/LiaoQiu-IM-Server.git --recursive
-cd LiaoQiu-IM-server/script
+git clone http://47.57.247.15:3000/im/im-server.git
+cd im-server/script
 chmod +x *.sh
 ./batch_build_all_service.sh 
 出现all services build success表示所有模块编译成功
@@ -59,7 +59,7 @@ kafka:
     topic: "ms2ps_chat"  im_push消费，推送消息到im_msg_gateway
 
 etcd:
-  etcdSchema: 聊球IM  #默认即可
+  etcdSchema: IM  #默认即可
   etcdAddr: [ 127.0.0.1:2379, 127.0.0.2:2379, 127.0.0.3:2379] #etcd集群
 
 mysql:
@@ -80,8 +80,8 @@ rpcRegisterIP:#不要填写
 im_msg 6个，im_push 5个
 
 ```
-聊球IMMessagePort: [ 10130, 10131, 10132, 10133, 10134,10135 ] #im_msg 配置6个端口则启动6个进程
-聊球IMPushPort: [ 10170, 10171, 10172, 10173, 10174 ] #im_push 配置5个端口则启动5个进程
+IMMessagePort: [ 10130, 10131, 10132, 10133, 10134,10135 ] #im_msg 配置6个端口则启动6个进程
+IMPushPort: [ 10170, 10171, 10172, 10173, 10174 ] #im_push 配置5个端口则启动5个进程
 ```
 
 im_msg_transfer 4个
@@ -94,10 +94,10 @@ msg_transfer_source_root="../cmd/im_msg_transfer/"
 msg_transfer_service_num=4
 ```
 
-#### （4）复制LiaoQiu-IM-server到其他服务器
+#### （4）复制im-server到其他服务器
 
 ```
-scp -r LiaoQiu-IM-server root@127.0.0.2:/data
+scp -r im-server root@127.0.0.2:/data
 ```
 
 
@@ -146,11 +146,11 @@ https/wss配置；负载均衡配置；以IM Server两台 127.0.0.1 127.0.0.2 �
 	
 server {
         listen 443;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
 
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
 
         ssl_session_timeout 5m;
 		gzip on;
@@ -185,16 +185,16 @@ server {
 }
 server {
         listen 80;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         rewrite ^(.*)$ https://${server_name}$1 permanent;
 }
 
 server {
         listen 10001;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
 
         gzip on;
@@ -217,10 +217,10 @@ server {
 
 server {
         listen 10002;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
 
         gzip on;
@@ -244,10 +244,10 @@ server {
 
 server {
         listen 10003;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
 
         gzip on;
@@ -270,10 +270,10 @@ server {
 
 server {
         listen 10004;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
 
         gzip on;
@@ -298,10 +298,10 @@ server {
 
 server {
         listen 10006;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
 
         gzip on;
@@ -324,10 +324,10 @@ server {
 
 server {
         listen 7880;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
 
         gzip on;
@@ -356,18 +356,18 @@ upstream storage {
 
 server {
   #      listen 443;
-   #     server_name storage-online.rentsoft.cn;
+   #     server_name storage-online.im.cn;
     #    ssl on
-     #   ssl_certificate /etc/nginx/conf.d/ssl/storage-online.rentsoft.cn_bundle.crt;
-      #  ssl_certificate_key /etc/nginx/conf.d/ssl/storage-online.rentsoft.cn.key; 
+     #   ssl_certificate /etc/nginx/conf.d/ssl/storage-online.im.cn_bundle.crt;
+      #  ssl_certificate_key /etc/nginx/conf.d/ssl/storage-online.im.cn.key; 
         ssl_session_timeout 5m;
 
  listen 443;
-        server_name storage-online.rentsoft.cn;
+        server_name storage-online.im.cn;
 
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/storage-online.rentsoft.cn_nginx/storage-online.rentsoft.cn_bundle.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/storage-online.rentsoft.cn_nginx/storage-online.rentsoft.cn.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/storage-online.im.cn_nginx/storage-online.im.cn_bundle.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/storage-online.im.cn_nginx/storage-online.im.cn.key;
 
 
         gzip on;

@@ -1,6 +1,6 @@
 # 源码部署-单机
 
->> 简要说明：聊球IM系统依赖六大组件，在编译部署聊球IM之前需要保证其安装好(以下为官方使用的组件版本)
+>> 简要说明：IM系统依赖六大组件，在编译部署IM之前需要保证其安装好(以下为官方使用的组件版本)
 ```
 1、ETCD（version:{"etcdserver":"3.3.8","etcdcluster":"3.3.0"}）//服务注册与发现
 2、MySQL(version:5.7)//用户业务信息以及管理后台查询消息使用
@@ -13,20 +13,18 @@
 ## 1、服务器环境说明
  Linux系统 8G及以上内存  （目前仅支持linux下的部署，其他系统的部署需要自行修改脚本）
 
- 获取聊球IM源码需要git环境，服务器如果没有需要安装git
+ 获取IM源码需要git环境，服务器如果没有需要安装git
 
- 聊球IM server端开发语言为go语言，源码部署需要[搭建go语言环境](https://doc.rentsoft.cn/#/qa/docker?id=_1golang%e7%8e%af%e5%a2%83%e5%ae%89%e8%a3%85)
+ IM server端开发语言为go语言，源码部署需要[搭建go语言环境](https://doc.im.app/#/component/docker)
 
 ## 2、拉取项目源码
->>聊球IM-Server源码中包含两个仓库，一个是外部仓库/LiaoQiu-IM-server，一个是位于/LiaoQiu-IM-server/cmd/Open-IM-SDK-Core的子仓库（用于web端使用）
+>>IM-Server源码中包含两个仓库，一个是外部仓库/im-server，一个是位于/im-server/cmd/Open-IM-SDK-Core的子仓库（用于web端使用）
 ```
-git clone http://47.57.247.15:3000/liaoqiuadmin/LiaoQiu-IM-Server.git --recursive（注:如果服务器网络不好,或者没有vpn代理无法获取github代码,可以自行前往该地址,获取最新tag代码并上传到服务器）
-使用此命令拉取项目后，进入cmd/Open-IM-SDK-Core,使用git checkout main将Open-IM-SDK-Core子仓库切换到main分支下
-(注：如果项目中cmd/Open-IM-SDK-Core这个子模块无法正常拉取，文件夹为空，可前往https://github.com/聊球IMSDK/Open-IM-SDK-Core，获取最新tag代码，上传服务器到/LiaoQiu-IM-server/cmd/目录下)
+git clone http://47.57.247.15:3000/im/im-server.git
 ```
 ## 3、修改配置文件参数
 ```
-cd LiaoQiu-IM-server
+cd im-server
 vim config.yaml
 ```
 
@@ -43,7 +41,7 @@ etcd:
 mysql:
   dbAddress: [ 127.0.0.1:13306 ]//组件部署在本地默认IP+监听端口(部署的MySQL端口默认为3306，如果未修改，记得修改此项配置)即可，部署在其他服务器，更换为服务监听的IP+端口
   dbUserName: root //修改为部署的MySQL账户名
-  dbPassword: 聊球IM //修改为部署的MySQL密码
+  dbPassword: IM //修改为部署的MySQL密码
 ```
 
 - 修改MongoDB配置项
@@ -51,7 +49,7 @@ mysql:
 ```
  mongo:
    dbAddress: 127.0.0.1:37017 //组件部署在本地默认IP+监听端口即可，部署在其他服务器，更换为服务监听的IP+端口
-   dbDatabase: 聊球IM //mongo中初始化的数据库名称，可修改
+   dbDatabase: IM //mongo中初始化的数据库名称，可修改
    dbUserName:
    dbPassword:
 ```
@@ -61,7 +59,7 @@ mysql:
 ```
  redis:
   dbAddress: [ 127.0.0.1:6379 ]
-  dbPassWord: 聊球IM #redis密码 修改为部署的redis密码
+  dbPassWord: IM #redis密码 修改为部署的redis密码
   enableCluster: false #如果外部redis以集群方式启动，需要打开此开关，单机默认
 ```
 
@@ -96,7 +94,7 @@ minio:(如不使用minio存储可忽略)
 
 ## 4、编译构建
 ```
-cd LiaoQiu-IM-server/script
+cd im-server/script
 chmod +x *.sh
 ./build_all_service.sh
 ```
@@ -120,19 +118,19 @@ chmod +x *.sh
 | TCP:10002（之前的10000端口）| api端口，比如用户、好友、群组等接口。     | 端口放行或nginx反向代理，关闭防火墙 |
 | TCP:10003（之前的30000端口）| ws协议，针对jssdk的专用端口。           | 端口放行或nginx反向代理，关闭防火墙 |
 | TCP:10004（之前的42233端口）| demo使用的用户注册登录端口。            | 端口放行或nginx反向代理，关闭防火墙 |
-| TCP:10005（之前的9000端口）| 选择minio存储时需要开通。(聊球IM的demo默认使用minio存储) | 端口放行或nginx反向代理，关闭防火墙 |
+| TCP:10005（之前的9000端口）| 选择minio存储时需要开通。(IM的demo默认使用minio存储) | 端口放行或nginx反向代理，关闭防火墙 |
 | TCP:10006（之前的8000端口）| 管理后台api端口，需要管理后台服务时开通。 | 端口放行或nginx反向代理，关闭防火墙 |
 
-注：如果使用nginx做反向代理，则只需要开放443端口即可。至此聊球IM的服务器已经搭建完毕，可通过[下载体验app修改IP](https://doc.rentsoft.cn/#/v2/validation/app)的方式访问验证。
+注：如果使用nginx做反向代理，则只需要开放443端口即可。至此IM的服务器已经搭建完毕，可通过[下载体验app修改IP](https://doc.im.cn/#/v2/validation/app)的方式访问验证。
 
 # 源码部署-单机-更新代码
 ```
-源码更新说明: 聊球IM发布新的版本后，会更新项目文件到main分支下，除开源代码外，还有配置文件config/config.yaml会更新，用户如果修改过这个文件，在使用git pull可能会有冲突，需要自行备份，然后比对，解决冲突，重新放置到config/文件夹。
+源码更新说明: IM发布新的版本后，会更新项目文件到main分支下，除开源代码外，还有配置文件config/config.yaml会更新，用户如果修改过这个文件，在使用git pull可能会有冲突，需要自行备份，然后比对，解决冲突，重新放置到config/文件夹。
 ```
 ## 1.关闭服务
 
 ```
-cd LiaoQiu-IM-server/script ; ./stop_all.sh 
+cd im-server/script ; ./stop_all.sh 
 ```
 ## 2.备份修改过的文件
 ```

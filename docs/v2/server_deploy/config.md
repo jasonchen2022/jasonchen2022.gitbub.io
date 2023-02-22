@@ -1,4 +1,4 @@
-聊球IM系统会使用使用的第三方服务包括对象存储，离线推送(配置文件在项目的config/config.yaml文件中)
+IM系统会使用使用的第三方服务包括对象存储，离线推送(配置文件在项目的config/config.yaml文件中)
 
 短信验证码仅仅在demo中使用，可自行替换，或者采用默认超级验证码666666
 
@@ -8,12 +8,12 @@
 
 - 腾讯云cos: （腾讯云对象存储服务，前往腾讯云注册账号获取相应密钥信息）
 
-- minio:（私有化对象存储服务器，聊球IM系统默认携带该组件启动，端口为10005，用户的媒体文件都会存储到minio中，需要服务器有足够存储空间以及带宽，保证上传和下载速度）
+- minio:（私有化对象存储服务器，IM系统默认携带该组件启动，端口为10005，用户的媒体文件都会存储到minio中，需要服务器有足够存储空间以及带宽，保证上传和下载速度）
 
 - 阿里云oss:（阿里云对象存储服务，前往阿里云注册账号获取相应密钥信息）
 
   ```
-  #对象存储服务，以下配置二选一，目前支持两种，腾讯云和minio，二者配置好其中一种即可（如果使用minio参考https://doc.rentsoft.cn/#/qa/minio搭建minio服务器）
+  #对象存储服务，以下配置二选一，目前支持两种，腾讯云和minio，二者配置好其中一种即可（如果使用minio参考https://doc.im.cn/#/qa/minio搭建minio服务器）
   credential: #腾讯cos，发送图片、视频、文件时需要，请自行申请后替换，必须修改
     tencent:
       appID:  
@@ -22,7 +22,7 @@
       secretID:  
       secretKey:  
     minio: #MinIO 发送图片、视频、文件时需要，请自行申请后替换，必须修改。 客户端初始化InitSDK，中 object_storage参数为minio
-      bucket: 聊球IM # 存储内容桶
+      bucket: IM # 存储内容桶
       appBucket: app # 存储app的桶
       location: us-east-1
       endpoint: http://127.0.0.1:10005 #minio外网ip 这个ip是给客户端访问的

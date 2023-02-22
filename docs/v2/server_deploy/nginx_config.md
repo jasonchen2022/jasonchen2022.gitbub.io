@@ -1,4 +1,4 @@
-在生产环境，建议使用https/wss，这个是聊球IM产品在生产环境下的nginx配置示例，可以参考使用，注意替换域名，证书和ip
+在生产环境，建议使用https/wss，这个是IM产品在生产环境下的nginx配置示例，可以参考使用，注意替换域名，证书和ip
 
 ```
  upstream  imserver{        
@@ -8,10 +8,10 @@
 	
 server {
         listen 443;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
 		gzip on;
 		gzip_min_length 1k;
@@ -41,16 +41,16 @@ server {
 }
 server {
         listen 80;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         rewrite ^(.*)$ https://${server_name}$1 permanent;
 }
 
 server {
         listen 50001;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
         gzip on;
         gzip_min_length 1k;
@@ -73,10 +73,10 @@ server {
 
 server {
         listen 50002;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
         gzip on;
         gzip_min_length 1k;
@@ -97,10 +97,10 @@ server {
 
 server {
         listen 50003;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
         gzip on;
         gzip_min_length 1k;
@@ -122,10 +122,10 @@ server {
 
 server {
         listen 50004;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
         gzip on;
         gzip_min_length 1k;
@@ -147,10 +147,10 @@ server {
 
 server {
         listen 50006;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
         gzip on;
         gzip_min_length 1k;
@@ -173,10 +173,10 @@ server {
 
 server {
         listen 57880;
-        server_name api.liaoqiu.app;
+        server_name api.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/api.liaoqiu.app.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/api.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/api.im.app.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/api.im.app.key;
         ssl_session_timeout 5m;
         gzip on;
         gzip_min_length 1k;
@@ -201,10 +201,10 @@ upstream storage {
 
 server {
 		listen 443;
-        server_name storage.liaoqiu.app;
+        server_name storage.im.app;
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/storage.liaoqiu.app_nginx/storage.liaoqiu.app_bundle.crt;
-        ssl_certificate_key /etc/nginx/conf.d/ssl/storage.liaoqiu.app_nginx/storage.liaoqiu.app.key;
+        ssl_certificate /etc/nginx/conf.d/ssl/storage.im.app_nginx/storage.im.app_bundle.crt;
+        ssl_certificate_key /etc/nginx/conf.d/ssl/storage.im.app_nginx/storage.im.app.key;
 		ssl_session_timeout 5m;
         gzip on;
         gzip_min_length 1k;

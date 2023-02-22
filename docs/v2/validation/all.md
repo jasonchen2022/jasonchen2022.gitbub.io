@@ -2,7 +2,7 @@
 
 （1）仅限于用户第一次初始化安装；
 
-（2）仅限于服务端有外网ip的情况，对于在内网部署或者需要nginx反代的情况，需要参考[此链接](https://doc.rentsoft.cn/#/v2/server_deploy/easy_deploy_new)；
+（2）仅限于服务端有外网ip的情况，对于在内网部署或者需要nginx反代的情况，需要参考[此链接](https://doc.im.cn/#/v2/server_deploy/easy_deploy_new)；
 
 （3）仅针对未安装过mysql etcd kafka mongodb redis组件的服务器；
 
@@ -11,13 +11,13 @@
 1. 项目clone
 
 ```
-git clone http://47.57.247.15:3000/liaoqiuadmin/LiaoQiu-IM-Server.git --recursive;
+git clone http://47.57.247.15:3000/im/im-server.git;
 ```
 
 2. 初始化安装
 
 ```
-cd  LiaoQiu-IM-server; chmod +x install_im_server.sh; ./install_im_server.sh;
+cd  im-server; chmod +x install_im_server.sh; ./install_im_server.sh;
 ```
 
 3. 检查服务
@@ -43,12 +43,12 @@ cd script;./docker_check_service.sh
 
 ## （二）app验证
 
-[下载app验证](https://doc.rentsoft.cn/#/v2/validation/app)
+[下载app验证](https://doc.im.cn/#/v2/validation/app)
 
 双击修改ip，保存配置，重启app。千万不要修改端口
 
 ## （三）web/pc验证
 
-web仅限于外网验证[web验证](https://doc.rentsoft.cn/#/js_v2/sdk_integrate/development?id=%e5%9c%a8%e7%ba%bf%e6%b5%8b%e8%af%95)
+web仅限于外网验证[web验证](https://doc.im.cn/#/js_v2/sdk_integrate/development?id=%e5%9c%a8%e7%ba%bf%e6%b5%8b%e8%af%95)
 
-如果纯内网环境建议用[pc应用验证](https://doc.rentsoft.cn/#/js_v2/sdk_integrate/development?id=electron%e5%ba%94%e7%94%a8%e4%b8%8b%e8%bd%bd)
+如果纯内网环境建议用[pc应用验证](https://doc.im.cn/#/js_v2/sdk_integrate/development?id=electron%e5%ba%94%e7%94%a8%e4%b8%8b%e8%bd%bd)

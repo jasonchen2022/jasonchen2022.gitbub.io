@@ -8,10 +8,10 @@
 单机环境下的组件部署，可以通过docker-compose一键部署，先选择某个大磁盘目录，然后依次输入如下命令：
 
 ```
-git clone http://47.57.247.15:3000/liaoqiuadmin/LiaoQiu-IM-Server.git --recursive;
+git clone http://47.57.247.15:3000/im/im-server.git;
 ```
 
-进入LiaoQiu-IM-Server项目后
+进入im-Server项目后
 
 1.修改.env 
 
@@ -28,7 +28,7 @@ config/usualConfig.yaml只需要修改以下信息，组件密码根据.env自�
 
 ```
 tokenpolicy:
-  accessSecret: "liaoqiu_im_server" #token生成相关 建议修改
+  accessSecret: "im_im_server" #token生成相关 建议修改
   accessExpire: 90 #token过期时间（天） 默认即可
 
 messageverify:
@@ -98,9 +98,7 @@ cd script;
 2. 下载源码到服务器
 
 ```shell
-git clone http://47.57.247.15:3000/liaoqiuadmin/LiaoQiu-IM-Server.git --recursive 
-cd cmd/Open-IM-SDK-Core
-git checkout main
+git clone http://47.57.247.15:3000/im/im-server.git
 ```
 
 3. 设置脚本权限
@@ -168,11 +166,11 @@ upstream im_grafana{
 
 server {
         listen 443;
-        server_name web.rentsoft.cn;   #1 web im 端 域名
+        server_name web.im.cn;   #1 web im 端 域名
 
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/web.rentsoft.cn.crt; #2 证书
-        ssl_certificate_key /etc/nginx/conf.d/ssl/web.rentsoft.cn.key; #3 证书
+        ssl_certificate /etc/nginx/conf.d/ssl/web.im.cn.crt; #2 证书
+        ssl_certificate_key /etc/nginx/conf.d/ssl/web.im.cn.key; #3 证书
         ssl_session_timeout 5m;
 		gzip on;
 		gzip_min_length 1k;
@@ -277,17 +275,17 @@ server {
 
 server {
         listen 80;
-        server_name web.rentsoft.cn ; #1 web im 端 域名
+        server_name web.im.cn ; #1 web im 端 域名
         rewrite ^(.*)$ https://${server_name}$1 permanent;
 }
 
 server {
         ssl_session_timeout 5m;
 	listen 443;
-        server_name storage.rentsoft.cn; #1 MinIO存储域名
+        server_name storage.im.cn; #1 MinIO存储域名
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/storage.rentsoft.cn.crt; #证书
-        ssl_certificate_key /etc/nginx/conf.d/ssl/storage.rentsoft.cn.key;    #证书
+        ssl_certificate /etc/nginx/conf.d/ssl/storage.im.cn.crt; #证书
+        ssl_certificate_key /etc/nginx/conf.d/ssl/storage.im.cn.key;    #证书
         gzip on;
         gzip_min_length 1k;
         gzip_buffers 4 16k;
@@ -309,10 +307,10 @@ server {
 
 server {
         listen 443;
-        server_name admin.rentsoft.cn; #后台管理域名
+        server_name admin.im.cn; #后台管理域名
         ssl on;
-        ssl_certificate /etc/nginx/conf.d/ssl/admin.rentsoft.cn.crt; # 证书
-        ssl_certificate_key /etc/nginx/conf.d/ssl/admin.rentsoft.cn.key; #证书
+        ssl_certificate /etc/nginx/conf.d/ssl/admin.im.cn.crt; # 证书
+        ssl_certificate_key /etc/nginx/conf.d/ssl/admin.im.cn.key; #证书
         ssl_session_timeout 5m;
         gzip on;
         gzip_min_length 1k;
@@ -334,7 +332,7 @@ server {
 
 server {
         listen 80;
-        server_name admin.rentsoft.cn; #管理后台 域名
+        server_name admin.im.cn; #管理后台 域名
         rewrite ^(.*)$ https://${server_name}$1 permanent;
 }
 
@@ -342,8 +340,6 @@ server {
 ```
 
 # 五、端口开放及访问路由
-
-## IM
 
 如果按照（五）做了nginx配置，仅开放443和80端口即可。如果未配置nginx，则开发10001-10010端口即可，需要注意的时候访问路径有调整，具体查看下表的对应关系。
 

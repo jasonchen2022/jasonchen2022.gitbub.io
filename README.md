@@ -1,4 +1,4 @@
-# 聊球IM-Docs
+# IM-Docs
 
 # dev
 

@@ -4,7 +4,7 @@ docker部署简要说明,docker是一种虚拟容器化技术,用于支持创建
 ```
 ## 搭建环境说明
 ```
-聊球IM使用的组件包含MQ和各种数据库组件,保证系统当前可用内存在2G及以上,官方使用docker版本为20.10.14,docker-compose版本为1.24.1,如果用户的系统没有安装docker以及docker-compose可以参照docker以及docker-compose环境搭建。
+IM使用的组件包含MQ和各种数据库组件,保证系统当前可用内存在2G及以上,官方使用docker版本为20.10.14,docker-compose版本为1.24.1,如果用户的系统没有安装docker以及docker-compose可以参照docker以及docker-compose环境搭建。
 ```
 
 ## 一键部署
@@ -12,19 +12,19 @@ docker部署简要说明,docker是一种虚拟容器化技术,用于支持创建
 如果确定是首次安装，可以直接采用如下命令完成1-4步
 
 ``` 
-git clone http://47.57.247.15:3000/liaoqiuadmin/LiaoQiu-IM-Server.git --recursive; cd LiaoQiu-IM-server/script ; chmod +x *.sh ; ./env_check.sh;cd .. ; docker-compose up -d;cd script ; ./docker_check_service.sh
+git clone http://47.57.247.15:3000/im/im-server.git; cd im-server/script ; chmod +x *.sh ; ./env_check.sh;cd .. ; docker-compose up -d;cd script ; ./docker_check_service.sh
 ```
 
 ## 1.克隆 
 
 ```
-git clone http://47.57.247.15:3000/liaoqiuadmin/LiaoQiu-IM-Server.git --recursive（注:如果服务器网络不好,或者没有vpn代理无法获取github代码,可以自行前往该地址,获取最新tag代码并上传到服务器）
+git clone http://47.57.247.15:3000/im/im-server.git
 ```
 
 ## 2.检测环境
 
 ```
-cd LiaoQiu-IM-server/script ; chmod +x *.sh ; ./env_check.sh
+cd im-server/script ; chmod +x *.sh ; ./env_check.sh
 ```
 
 ![环境监测](../../images/docker_deploy_env.png)
@@ -55,15 +55,15 @@ cd script ; ./docker_check_service.sh
 | TCP:10002（之前的10000端口）| api端口，比如用户、好友、群组等接口。     | 端口放行或nginx反向代理，关闭防火墙 |
 | TCP:10003（之前的30000端口）| ws协议，针对jssdk的专用端口。           | 端口放行或nginx反向代理，关闭防火墙 |
 | TCP:10004（之前的42233端口）| demo使用的用户注册登录端口。            | 端口放行或nginx反向代理，关闭防火墙 |
-| TCP:10005（之前的9000端口）| 选择minio存储时需要开通。(聊球IM的demo默认使用minio存储) | 端口放行或nginx反向代理，关闭防火墙 |
+| TCP:10005（之前的9000端口）| 选择minio存储时需要开通。(IM的demo默认使用minio存储) | 端口放行或nginx反向代理，关闭防火墙 |
 | TCP:10006（之前的8000端口）| 管理后台api端口，需要管理后台服务时开通。 | 端口放行或nginx反向代理，关闭防火墙 |
 | TCP:10007 | 数据统计端口 | 端口放行或nginx反向代理，关闭防火墙 |
 
-注：如果使用nginx做反向代理，则只需要开放443端口即可。至此聊球IM的服务器已经搭建完毕，可通过[下载体验app修改IP](https://doc.rentsoft.cn/#/v2/validation/app)的方式访问验证。
+注：如果使用nginx做反向代理，则只需要开放443端口即可。至此IM的服务器已经搭建完毕，可通过[下载体验app修改IP](https://doc.im.cn/#/v2/validation/app)的方式访问验证。
 
 # Docker部署-更新镜像
 ```
-docker更新镜像说明: 聊球IM发布新的镜像后，会更新项目文件，其中有两个重要文件，config/config.yaml、docker-compose文件会更新，用户如果修改过这两个文件，在使用git pull可能会有冲突，需要自行备份，然后比对，解决冲突，重新放置到项目目录中。
+docker更新镜像说明: IM发布新的镜像后，会更新项目文件，其中有两个重要文件，config/config.yaml、docker-compose文件会更新，用户如果修改过这两个文件，在使用git pull可能会有冲突，需要自行备份，然后比对，解决冲突，重新放置到项目目录中。
 ```
 
 ## 一键更新
@@ -77,7 +77,7 @@ docker-compose down ; git checkout main -f ; git pull -f ; docker-compose pull;c
 ## 1.关闭服务
 
 ```
-cd LiaoQiu-IM-server ; docker-compose down
+cd im-server ; docker-compose down
 ```
 ## 2.备份修改过的文件
 ```
@@ -126,7 +126,7 @@ cd script ; ./docker_check_service.sh
 
 尽量不要混合启动，自行build，然后通过docker-compose启动会存在问题。因为docker映射，导致本地二进制文件、配置文件不一致，造成混乱。
 
-## 4.聊球IM测试服务
+## 4.IM测试服务
 
 IP：121.37.25.71/
 

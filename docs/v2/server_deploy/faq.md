@@ -1,112 +1,84 @@
-# runtime/cgo: pthread_create failed: Operation not permitted
+## docker部署常见问题总结分析和解决办法
 
-### 问题描述
+### 1.环境及内存问题
+
+Linux系统 2G及以上可用内存 ，其他操作系统还没经过测试。
+
+### 2.mongodb启动失败
+
+由于mongodb新老版本数据格式不兼容导致，清除mongodb数据，并重启
 
 ```
-start msg_transfer server
-runtime/cgo: pthread_create failed: Operation not permitted
-SIGABRT: abort
-PC=0x7fb6241c6a7c m=0 sigcode=18446744073709551610
-
-goroutine 0 [idle]:
-runtime: unknown pc 0x7fb6241c6a7c
-stack: frame={sp:0x7ffe40673940, fp:0x0} stack=[0x7ffe3fe74e98,0x7ffe40673ed0)
-0x00007ffe40673840:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673850:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673860:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673870:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673880:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673890:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738a0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738b0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738c0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738d0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738e0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738f0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673900:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673910:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673920:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673930:  0x0000000000000000  0x00007fb6241c6a6e 
-0x00007ffe40673940: <0x0000000000000000  0x0000000000000000 
-0x00007ffe40673950:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673960:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673970:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673980:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673990:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406739a0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406739b0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406739c0:  0x0000000000000000  0x1fee610edfdc7500 
-0x00007ffe406739d0:  0x00007fb62412eb80  0x0000000000000006 
-0x00007ffe406739e0:  0x00000000020b02e0  0x0000000000000178 
-0x00007ffe406739f0:  0x00000000014aa2c0  0x00007fb624172476 
-0x00007ffe40673a00:  0x00007fb62434ae90  0x00007fb6241587f3 
-0x00007ffe40673a10:  0x0000000000000020  0x0000000000000000 
-0x00007ffe40673a20:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673a30:  0x0000000000000000  0x0000000000000000 
-runtime: unknown pc 0x7fb6241c6a7c
-stack: frame={sp:0x7ffe40673940, fp:0x0} stack=[0x7ffe3fe74e98,0x7ffe40673ed0)
-0x00007ffe40673840:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673850:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673860:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673870:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673880:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673890:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738a0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738b0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738c0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738d0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738e0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406738f0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673900:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673910:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673920:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673930:  0x0000000000000000  0x00007fb6241c6a6e 
-0x00007ffe40673940: <0x0000000000000000  0x0000000000000000 
-0x00007ffe40673950:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673960:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673970:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673980:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673990:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406739a0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406739b0:  0x0000000000000000  0x0000000000000000 
-0x00007ffe406739c0:  0x0000000000000000  0x1fee610edfdc7500 
-0x00007ffe406739d0:  0x00007fb62412eb80  0x0000000000000006 
-0x00007ffe406739e0:  0x00000000020b02e0  0x0000000000000178 
-0x00007ffe406739f0:  0x00000000014aa2c0  0x00007fb624172476 
-0x00007ffe40673a00:  0x00007fb62434ae90  0x00007fb6241587f3 
-0x00007ffe40673a10:  0x0000000000000020  0x0000000000000000 
-0x00007ffe40673a20:  0x0000000000000000  0x0000000000000000 
-0x00007ffe40673a30:  0x0000000000000000  0x0000000000000000 
-
-goroutine 1 [running]:
-runtime.systemstack_switch()
-	/usr/local/go/src/runtime/asm_amd64.s:436 fp=0xc000052780 sp=0xc000052778 pc=0x46ea20
-runtime.main()
-	/usr/local/go/src/runtime/proc.go:170 +0x6d fp=0xc0000527e0 sp=0xc000052780 pc=0x440c8d
-runtime.goexit()
-	/usr/local/go/src/runtime/asm_amd64.s:1571 +0x1 fp=0xc0000527e8 sp=0xc0000527e0 pc=0x470c41
+docker-compose down
+rm components/mongodb/data/ -rf
+docker-compose up -d
 ```
 
-### 解决途径
+### 3.外部已有mongo，mysql等组件
 
-使用docker版本为20.10.14, docker-compose版本为1.24.1
+```
+docker-compose down
+```
 
-# platform is not same to token platform
+先注释掉docker-compose.yaml中 open_im_server对应的depends_on；修改config/config.yaml对于的组件信息，ip port用户 密码等等；
 
-在登录时返回这个错误，表示获取token的platformID和初始化时的platformID不一致
+```
+docker-compose up -d
+```
 
- Open_IM/pkg/common/token_verify.WsVerifyToken()@279:  platform is not same to token platform args: token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIzMDY0ODMzNTgzIiwiUGxhdGZvcm0iOiJBbmRyb2lkIiwiZXhwIjoxOTcyOTA0MDk5LCJuYmYiOjE2NTc1NDQwOTksImlhdCI6MTY1NzU0NDA5OX0.W0vISNx9pmJD6UMwGDEW1gigU8QywUxpjexfuSSq0Mk
- operationID: 1657544102328748318 userID: 3064833583 platformID: IOS claims platformID: Android: different platformID operationID 1657544102328748318websocket: bad handshake 707
 
-比如这个表示用Platform为2（Android）获取token，但初始化Platform为1（IOS ）
+#### 4.start_all.sh显示open_im_sdk_server SERVICE START ERROR PLEASE CHECK openIM.log
 
-# uid is not same to token uid
+>建议排查思路：1.确保IM.log如果没有显示任何错误
+解决方法：
+```
+1.使用Supervisor管理器挂载编译后的/bin/open_im_sdk_server可执行文件
+2.重新执行./check_all.sh
+```
 
-在登录时返回这个错误，表示获取token的userID和登录时的userID不一致
 
-Open_IM/pkg/common/token_verify.WsVerifyToken()@275:  uid is not same to token uid
- args: token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIxMTg3MzM2ODUzIiwiUGxhdGZvcm0iOiJJT1MiLCJleHAiOjE5NzI5MDU1MDksIm5iZiI6MTY1NzU0NTUwOSwiaWF0IjoxNjU3NTQ1NTA5fQ.K3BhR8RNwgKR2kgivcBkjByn79Xi4rinIzB5oYyLbCQ operationID: 
-1657545511742178518 userID: 3064833583 platformID: IOS claims.UID: 1187336853: different userID operationID 1657545511742178518websocket: bad handshake 708
+#### 5.check_all.sh显示有服务失败，docker-compose ps显示某些服务不处于Up状态
 
-比如这个表示用1187336853获取token，但登录的userID为3064833583 
+>建议排查思路：1.如果连续执行check_all.sh都有失败，如果发现mongo的State处于Restaring状态，说明mongo运行不正常（由于版本问题导致）
+
+解决方法：
+
+```
+1.docker-compose down
+2.进入项目的目录的components/下，删除mongo的文件夹（正式线上保持一种版本，可以修改docker-compose中的mongo镜像版本）
+3.检查docker images下所有镜像的版本，可以用docker rmi [IMAGE ID]删除老的镜像，比如：open_im_server和mongo的镜像
+4.docker-compose up -d
+```
+
+
+
+#### 6.check_all.sh显示有服务失败，docker-compose ps显示所有组件up正常，查看IM.log
+
+>建议排查思路：1.如果IM.log中有mysql.go或者model.go的错误，一般情况是mysql初始化失败（部署环境中如果已经有MySQL的情况）
+
+解决方法：
+
+```
+1.这种情况通过lsof -i:3306查看MySQL是否正常启动
+2.进入config/config.yaml文件中修改mysql的用户和密码(已有MySQL的用户和密码)，或者关闭外部的MySQL
+3.docker-compose retart 重启服务
+```
+
+>建议排查思路：2.如果IM.log中有mysql.go或者model.go的错误，一般情况是mysql初始化失败（全新系统，外部并没有安装过MySQL）
+
+解决方法：
+
+```
+1.官方建议，混合启动，保持所有组件运行正常
+2.安装go语言环境：wget -c https://dl.google.com/go/go1.17.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
+3.进入项目script中执行chmod +x *.sh
+4.执行./build_all_service.sh
+5.执行./start_all.sh
+6.执行./check_all.sh
+```
+
+正常情况如下：
+
+![image-20211112140749182](../../images/docker_deploy_suc.png)
+
 

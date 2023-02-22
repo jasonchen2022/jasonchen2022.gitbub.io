@@ -39,9 +39,9 @@ docker-compose up -d
 4.docker-compose up -d
 ```
 
-#### 5.check_all.sh显示有服务失败，docker-compose ps显示所有组件up正常，查看聊球IM.log
+#### 5.check_all.sh显示有服务失败，docker-compose ps显示所有组件up正常，查看IM.log
 
->建议排查思路：1.如果聊球IM.log中有mysql.go或者model.go的错误，一般情况是mysql初始化失败（部署环境中如果已经有MySQL的情况）
+>建议排查思路：1.如果IM.log中有mysql.go或者model.go的错误，一般情况是mysql初始化失败（部署环境中如果已经有MySQL的情况）
 
 解决方法：
 
@@ -51,7 +51,7 @@ docker-compose up -d
 3.docker-compose retart 重启服务
 ```
 
->建议排查思路：2.如果聊球IM.log中有mysql.go或者model.go的错误，一般情况是mysql初始化失败（全新系统，外部并没有安装过MySQL）
+>建议排查思路：2.如果IM.log中有mysql.go或者model.go的错误，一般情况是mysql初始化失败（全新系统，外部并没有安装过MySQL）
 
 解决方法：
 
@@ -67,3 +67,14 @@ docker-compose up -d
 正常情况如下：
 
 ![image-20211112140749182](../images/docker_deploy_suc.png)
+
+
+#### 6.执行./start_all.sh显示open_im_sdk_server SERVICE START ERROR PLEASE CHECK openIM.log
+
+>建议排查思路：1.确保IM.log如果没有显示任何错误
+解决方法：
+```
+1.使用Supervisor管理器挂载编译后的/bin/open_im_sdk_server可执行文件
+2.重新执行./check_all.sh
+```
+

@@ -239,38 +239,6 @@ server {
                 proxy_set_header X-Forwarded-For $remote_addr;
                 proxy_pass http://im_grafana/;
                }
-        location ^~/chat/ { #10008 chat login
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "Upgrade";
-                proxy_set_header X-real-ip $remote_addr;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_pass http://im_chat/;
-               }
-        location ^~/complete_admin/ { #10009  admin
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "Upgrade";
-                proxy_set_header X-real-ip $remote_addr;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_pass http://im_complete_admin/;
-               }
-        location ^~/organization/ { #10010 organization
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "Upgrade";
-                proxy_set_header X-real-ip $remote_addr;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_pass http://im_organization/;
-               }
-        location ^~/open_rtc/ {  #7880 rtc
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "Upgrade";
-                proxy_set_header X-real-ip $remote_addr;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_pass http://im_open_rtc/;
-              }
 }
 
 server {

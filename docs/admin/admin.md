@@ -1,5 +1,5 @@
 # 后台预览
-- 代码仓库：http://47.57.247.15:3000/im/im-admin.git
+- 代码仓库：http://47.243.225.90:3000/im/im-admin.git
 - 测试账号：在Server的Config.yaml中manager的配置
 - 测试密码：在Server的Config.yaml中manager的配置
 

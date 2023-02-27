@@ -11,7 +11,7 @@
 1. 项目clone
 
 ```
-git clone http://47.57.247.15:3000/im/im-server.git;
+git clone http://47.243.225.90:3000/im/im-server.git;
 ```
 
 2. 初始化安装

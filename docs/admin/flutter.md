@@ -1,6 +1,6 @@
 # 安装步骤
 ## 开始
-- 1.克隆代码：http://47.243.225.90:3000/im/im-flutter.git 账号：im_clone  密码：123qwe
+- 1.克隆代码：http://47.243.225.90:3000/im/im-flutter.git 账号密码：找管理员索取
 - 2.修改/lib/src/common/config.dart中对应的接口地址
 - 3.执行命令：
 

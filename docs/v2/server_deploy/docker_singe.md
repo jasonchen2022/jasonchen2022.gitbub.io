@@ -18,7 +18,7 @@ git clone http://47.243.225.90:3000/im/im-server.git;  cd im-server/script ; chm
 ## 1.克隆 
 
 ```
-git clone http://47.243.225.90:3000/im/im-server.git 账号：im_clone  密码：123qwe
+git clone http://47.243.225.90:3000/im/im-server.git 账号密码：找管理员索取
 ```
 
 ## 2.检测环境

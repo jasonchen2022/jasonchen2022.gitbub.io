@@ -8,7 +8,7 @@
 单机环境下的组件部署，可以通过docker-compose一键部署，先选择某个大磁盘目录，然后依次输入如下命令：
 
 ```
-git clone http://47.243.225.90:3000/im/im-server.git; 账号：im_clone  密码：123qwe
+git clone http://47.243.225.90:3000/im/im-server.git; 账号密码：找管理员索取
 ```
 
 进入im-Server项目后
@@ -98,7 +98,7 @@ cd script;
 2. 下载源码到服务器
 
 ```shell
-git clone http://47.243.225.90:3000/im/im-server.git  账号：im_clone  密码：123qwe
+git clone http://47.243.225.90:3000/im/im-server.git  账号密码：找管理员索取
 ```
 
 3. 设置脚本权限

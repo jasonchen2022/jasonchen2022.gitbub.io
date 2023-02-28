@@ -11,7 +11,7 @@
 1. 项目clone
 
 ```
-git clone http://47.243.225.90:3000/im/im-server.git;
+git clone http://47.243.225.90:3000/im/im-server.git; 账号：im_clone  密码：123qwe
 ```
 
 2. 初始化安装

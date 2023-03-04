@@ -27,7 +27,7 @@ Ant Design Pro提供了一些有用的脚本，帮助您快速启动和构建web
 ### Start project
 
 ```bash
-npm start
+npm run serve
 ```
 
 ### Build project

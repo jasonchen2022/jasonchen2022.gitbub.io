@@ -9,3 +9,4 @@
 * **组件部署**
   * [docker及golang安装](component/docker.md)
   * [minio部署](component/minio.md)
+  * [更新表结构](component/sql.md)

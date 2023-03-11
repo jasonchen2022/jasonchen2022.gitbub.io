@@ -7,10 +7,8 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 47.242.180.247
  Source Server Type    : MySQL
  Source Server Version : 50734
- Source Host           : 47.242.180.247:23306
  Source Schema         : openIM
 
  Target Server Type    : MySQL

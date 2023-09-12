@@ -134,6 +134,11 @@ cd script
 ```
 ./check_all.sh
 ```
+4. 在宝塔新增计划任务(一天执行一次，目录改为自己的真实目录)
+
+```
+cd /root/Open-IM-Server/bin && ./open_im_cron_task
+```
 
  出现all services launch success表示服务启动成功 
 

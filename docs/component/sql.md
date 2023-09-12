@@ -7,18 +7,20 @@
 /*
  Navicat Premium Data Transfer
 
+ Source Server         : 聊球
  Source Server Type    : MySQL
- Source Server Version : 50734
- Source Schema         : openIM
+ Source Server Version : 50740
+ Source Host           : rm-3nsom4337563v62qjno.mysql.rds.aliyuncs.com:3306
+ Source Schema         : openim_online
 
  Target Server Type    : MySQL
- Target Server Version : 50734
+ Target Server Version : 50740
  File Encoding         : 65001
 
- Date: 05/03/2023 22:07:34
+ Date: 12/09/2023 20:28:02
 */
 
-SET NAMES utf8mb
+SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
@@ -67,30 +69,31 @@ CREATE TABLE `blacks` (
 -- ----------------------------
 DROP TABLE IF EXISTS `chat_logs`;
 CREATE TABLE `chat_logs` (
-  `server_msg_id` char(64) CHARACTER SET utf8 NOT NULL,
-  `client_msg_id` char(64) CHARACTER SET utf8 DEFAULT NULL,
-  `send_id` char(64) CHARACTER SET utf8 DEFAULT NULL,
-  `recv_id` char(64) CHARACTER SET utf8 DEFAULT NULL,
-  `sender_platform_id` int(11) DEFAULT NULL COMMENT '平台类型 1:ios 2:android 3:windows 4:osx 5:web&mini 7:linux 8:管理员',
-  `sender_nick_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `sender_face_url` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `server_msg_id` char(64) NOT NULL,
+  `client_msg_id` char(64) DEFAULT NULL,
+  `send_id` char(64) DEFAULT NULL,
+  `recv_id` char(64) DEFAULT NULL,
+  `sender_platform_id` int(11) DEFAULT NULL,
+  `sender_nick_name` varchar(255) DEFAULT NULL,
+  `sender_face_url` varchar(255) DEFAULT NULL,
   `session_type` int(11) DEFAULT NULL,
   `msg_from` int(11) DEFAULT NULL,
   `content_type` int(11) DEFAULT NULL,
-  `content` text,
+  `content` varchar(3000) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `send_time` datetime(3) DEFAULT NULL,
   `create_time` datetime(3) DEFAULT NULL,
-  `ex` varchar(1024) CHARACTER SET utf8 DEFAULT NULL,
-  PRIMARY KEY (`server_msg_id`) USING BTREE,
-  KEY `content_type` (`send_time`,`content_type`) USING BTREE,
-  KEY `content_type_alone` (`content_type`) USING BTREE,
-  KEY `sendTime` (`send_time`) USING BTREE,
-  KEY `send_id` (`send_time`,`send_id`) USING BTREE,
-  KEY `recv_id` (`send_time`,`recv_id`) USING BTREE,
-  KEY `session_type` (`send_time`,`session_type`) USING BTREE,
-  KEY `session_type_alone` (`session_type`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `ex` varchar(1024) DEFAULT NULL,
+  PRIMARY KEY (`server_msg_id`),
+  KEY `sendTime` (`send_time`),
+  KEY `send_id` (`send_time`,`send_id`),
+  KEY `recv_id` (`send_time`,`recv_id`),
+  KEY `session_type` (`send_time`,`session_type`),
+  KEY `session_type_alone` (`session_type`),
+  KEY `content_type` (`send_time`,`content_type`),
+  KEY `content_type_alone` (`content_type`),
+  KEY `idx_sessiontype_sendid_sendtime` (`session_type`,`send_id`,`send_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for client_init_config
@@ -123,6 +126,20 @@ CREATE TABLE `conversations` (
   `ex` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`owner_user_id`,`conversation_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for custom_msg
+-- ----------------------------
+DROP TABLE IF EXISTS `custom_msg`;
+CREATE TABLE `custom_msg` (
+  `id` int(11) NOT NULL COMMENT '主键',
+  `send_id` int(11) DEFAULT NULL COMMENT '发送者ID',
+  `receive_id` int(11) DEFAULT NULL COMMENT '接收者ID',
+  `master_id` int(11) DEFAULT NULL COMMENT '文本ID',
+  `content` longtext COMMENT '文本',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for department_members
@@ -186,6 +203,7 @@ CREATE TABLE `friends` (
   `add_source` int(11) DEFAULT NULL,
   `operator_user_id` varchar(64) DEFAULT NULL,
   `ex` varchar(1024) DEFAULT NULL,
+  `is_sync` int(11) DEFAULT '0' COMMENT '1同步失败 2成功',
   PRIMARY KEY (`owner_user_id`,`friend_user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -205,6 +223,7 @@ CREATE TABLE `group_members` (
   `operator_user_id` varchar(64) DEFAULT NULL,
   `mute_end_time` datetime(3) DEFAULT NULL,
   `ex` varchar(1024) DEFAULT NULL,
+  `is_sync` int(11) DEFAULT '0' COMMENT '1同步失败 2成功',
   PRIMARY KEY (`group_id`,`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -234,7 +253,7 @@ DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups` (
   `group_id` varchar(64) NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `notification` varchar(255) DEFAULT NULL,
+  `notification` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `introduction` varchar(255) DEFAULT NULL,
   `face_url` varchar(255) DEFAULT NULL,
   `create_time` datetime(3) DEFAULT NULL,
@@ -247,8 +266,36 @@ CREATE TABLE `groups` (
   `apply_member_friend` int(11) DEFAULT NULL,
   `notification_update_time` datetime(3) DEFAULT NULL,
   `notification_user_id` varchar(64) DEFAULT NULL,
+  `is_sync` int(11) DEFAULT '0' COMMENT '1同步失败 2成功',
   PRIMARY KEY (`group_id`) USING BTREE,
   KEY `create_time` (`create_time`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for hot_search
+-- ----------------------------
+DROP TABLE IF EXISTS `hot_search`;
+CREATE TABLE `hot_search` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `title` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '标题',
+  `remark` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '备注',
+  `like_count` int(11) DEFAULT '0' COMMENT '热度',
+  `create_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for hot_search_tags
+-- ----------------------------
+DROP TABLE IF EXISTS `hot_search_tags`;
+CREATE TABLE `hot_search_tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `hs_id` int(11) DEFAULT NULL COMMENT '热搜关联id',
+  `name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '标签',
+  `create_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -279,6 +326,114 @@ CREATE TABLE `ip_limits` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for match
+-- ----------------------------
+DROP TABLE IF EXISTS `match`;
+CREATE TABLE `match` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '用户id',
+  `user_type` int(11) DEFAULT NULL COMMENT '用户类型(0:普通用户  1:内部用户)',
+  `user_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '用户名称',
+  `user_avatar` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '头像',
+  `title` varchar(2550) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '标题',
+  `event_id` int(11) DEFAULT NULL COMMENT '联赛id',
+  `event_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '联赛名称',
+  `match_id` int(11) DEFAULT NULL COMMENT '赛事id',
+  `suggest_team` int(11) DEFAULT NULL COMMENT '推荐球队（0：主队  1：客队）',
+  `home_id` int(11) DEFAULT NULL COMMENT '主队id',
+  `home_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '主队',
+  `away_id` int(11) DEFAULT NULL COMMENT '客队id',
+  `away_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '客队',
+  `match_time` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '比赛时间',
+  `is_visible` int(11) DEFAULT NULL COMMENT '是否可见（0 可见  1不可见）',
+  `address` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '地址',
+  `share_count` int(11) DEFAULT '0' COMMENT '分享数',
+  `like_count` int(11) DEFAULT '0' COMMENT '点赞数',
+  `reflect_count` int(255) DEFAULT '0' COMMENT '举报次数',
+  `comment_count` int(11) DEFAULT '0' COMMENT '评论数',
+  `status` int(11) DEFAULT '0' COMMENT '0：审核中  1：审核通过  2：失败',
+  `remark` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '备注',
+  `is_share` int(11) DEFAULT '0' COMMENT '0  自己的帖子  1转发的帖子',
+  `is_reflect` int(255) DEFAULT '0' COMMENT '是否被举报（0：正常  1：被举报）',
+  `create_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `p_m_id` int(11) DEFAULT NULL COMMENT '用于记录分享来源',
+  `parent_user_id` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '分享来源  用户',
+  `parent_user_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '分享来源  用户',
+  `parent_user_avatar` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '分享来源  用户',
+  `like_time` datetime DEFAULT NULL COMMENT '最新点赞时间(用于查通知信息)',
+  `reply_time` datetime DEFAULT NULL COMMENT '最新回复时间(用于查通知信息)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for match_collect
+-- ----------------------------
+DROP TABLE IF EXISTS `match_collect`;
+CREATE TABLE `match_collect` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '用户id',
+  `m_id` int(11) DEFAULT NULL COMMENT '比赛表主键id',
+  `create_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for match_comment_like
+-- ----------------------------
+DROP TABLE IF EXISTS `match_comment_like`;
+CREATE TABLE `match_comment_like` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) DEFAULT NULL COMMENT '父id',
+  `m_id` int(11) DEFAULT NULL COMMENT '赛事主键id',
+  `publish_user_id` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '发布用户id',
+  `publish_user_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '用户名称',
+  `publish_user_avatar` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '头像',
+  `ansower_user_id` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '回复用户id',
+  `ansower_user_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '用户名称',
+  `ansower_user_avatar` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '头像',
+  `content` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '评论内容',
+  `comment_count` int(11) DEFAULT '0' COMMENT '评论数',
+  `like_count` int(11) DEFAULT '0' COMMENT '点赞数',
+  `data_type` int(11) DEFAULT '0' COMMENT '0:点赞   1：评论',
+  `status` int(11) DEFAULT '0' COMMENT '评论审核状态 0 审核中  1 通过 2失败 ',
+  `is_delete` int(11) DEFAULT '0' COMMENT '1  标记通知为删除',
+  `remark` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '审核备注',
+  `create_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for match_images
+-- ----------------------------
+DROP TABLE IF EXISTS `match_images`;
+CREATE TABLE `match_images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `m_id` int(11) DEFAULT NULL COMMENT 'match表主键id',
+  `url` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '图片地址',
+  `create_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for match_reflect
+-- ----------------------------
+DROP TABLE IF EXISTS `match_reflect`;
+CREATE TABLE `match_reflect` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '用户id',
+  `m_id` int(11) DEFAULT NULL COMMENT 'match表主键id',
+  `remark` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '内容',
+  `reflect_type` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '举报类型',
+  `create_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for organization_users
 -- ----------------------------
 DROP TABLE IF EXISTS `organization_users`;
@@ -305,11 +460,22 @@ CREATE TABLE `params` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `field` varchar(255) DEFAULT NULL COMMENT 'key',
   `value` varchar(255) DEFAULT NULL COMMENT 'value',
-  `remark` varchar(255) DEFAULT '1' COMMENT '备注',
+  `remark` varchar(2550) DEFAULT '1' COMMENT '备注',
   `create_time` datetime DEFAULT NULL COMMENT '添加时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for phone_number
+-- ----------------------------
+DROP TABLE IF EXISTS `phone_number`;
+CREATE TABLE `phone_number` (
+  `user_id` varchar(64) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `phone_number_rsa` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for point_detail
@@ -328,7 +494,7 @@ CREATE TABLE `point_detail` (
   `create_time` datetime DEFAULT NULL COMMENT '添加时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=389 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=65544 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for point_exchange_record
@@ -350,7 +516,7 @@ CREATE TABLE `point_exchange_record` (
   `create_time` datetime DEFAULT NULL COMMENT '添加时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=265 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for product
@@ -381,18 +547,19 @@ DROP TABLE IF EXISTS `red_packets`;
 CREATE TABLE `red_packets` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `record_id` varchar(255) DEFAULT NULL COMMENT '记录号（user_id+yyyymmddhhmmss+两位随机数)',
-  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `user_id` varchar(255) DEFAULT NULL COMMENT '用户id',
   `total_point` int(11) DEFAULT NULL COMMENT '总球币',
   `point` int(11) DEFAULT NULL COMMENT '单个红包球币',
   `count` int(11) DEFAULT NULL COMMENT '实时剩余数量',
-  `real_count` int(11) DEFAULT NULL COMMENT '红包个数',
+  `real_count` int(11) DEFAULT '0' COMMENT '红包个数',
   `val_time` datetime DEFAULT NULL COMMENT '过期时间',
   `remark` varchar(255) DEFAULT NULL COMMENT '文案',
+  `type` int(11) DEFAULT '0' COMMENT '红包类型（0：普通红包    1：手气红包）',
   `create_time` datetime DEFAULT NULL COMMENT '添加时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `is_return` int(11) DEFAULT '0' COMMENT '是否退还（1已退还  0 未退还）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1770 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for register_add_friend
@@ -491,36 +658,51 @@ CREATE TABLE `user_ip_white_list` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for user_logout
+-- ----------------------------
+DROP TABLE IF EXISTS `user_logout`;
+CREATE TABLE `user_logout` (
+  `user_id` varchar(255) NOT NULL,
+  `create_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `user_id` varchar(64) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `face_url` varchar(255) DEFAULT NULL,
+  `face_url` varchar(255) DEFAULT 'ic_avatar_01',
   `gender` int(11) DEFAULT NULL,
-  `phone_number` varchar(32) DEFAULT NULL,
+  `phone_number` varchar(255) DEFAULT NULL,
+  `phone_number_rsa` varchar(255) DEFAULT NULL,
   `birth` datetime(3) DEFAULT NULL,
   `email` varchar(64) DEFAULT NULL,
   `ex` varchar(1024) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `create_time` datetime(3) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   `app_manger_level` int(11) DEFAULT NULL,
   `global_recv_msg_opt` int(11) DEFAULT NULL,
-  `check_in_point` int(11) NOT NULL,
+  `check_in_point` int(11) DEFAULT NULL,
   `check_in_time` bigint(20) DEFAULT NULL,
   `user_type` int(11) DEFAULT NULL,
   `ci_point` bigint(20) DEFAULT NULL,
   `rp_point` bigint(20) DEFAULT NULL,
   `rp_max_user_id` varchar(255) DEFAULT NULL,
   `rp_max_point` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`check_in_point`) USING BTREE,
+  `apply_count` int(11) DEFAULT NULL COMMENT '申请好友数量',
+  `apply_date` varchar(255) DEFAULT NULL COMMENT '申请日期',
+  `publish_count` int(11) DEFAULT '0' COMMENT '发布帖子数量',
+  `is_sync` int(11) DEFAULT '0' COMMENT '1同步失败 2成功',
+  PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE KEY `phone_number` (`phone_number`) USING BTREE,
   KEY `create_time` (`create_time`) USING BTREE,
   KEY `check_in_time` (`check_in_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;
-
 
 ```

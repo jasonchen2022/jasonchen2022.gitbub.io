@@ -12,13 +12,13 @@ IM使用的组件包含MQ和各种数据库组件,保证系统当前可用内存
 如果确定是首次安装，可以直接采用如下命令完成1-4步
 
 ``` 
-git clone http://47.243.225.90:3000/im/im-server.git;  cd im-server/script ; chmod +x *.sh ; ./env_check.sh;cd .. ; docker-compose up -d;cd script ; ./docker_check_service.sh
+git clone http://47.243.92.177:3000/im/im-server.git;  cd im-server/script ; chmod +x *.sh ; ./env_check.sh;cd .. ; docker-compose up -d;cd script ; ./docker_check_service.sh
 ```
 
 ## 1.克隆 
 
 ```
-git clone http://47.243.225.90:3000/im/im-server.git 账号密码：找管理员索取
+git clone http://47.243.92.177:3000/im/im-server.git 账号密码：找管理员索取
 ```
 
 ## 2.检测环境

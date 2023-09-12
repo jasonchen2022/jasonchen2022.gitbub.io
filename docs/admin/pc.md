@@ -2,7 +2,7 @@
 ## 开始
 
 ### Develop
-- 代码仓库：http://47.243.225.90:3000/im/im-pc.git 账号密码：找管理员索取
+- 代码仓库：http://47.243.92.177:3000/im/im-pc.git 账号密码：找管理员索取
 - 修改配置文件：/src/config/index.ts中的接口地址
 - Get dependencies from npm
 

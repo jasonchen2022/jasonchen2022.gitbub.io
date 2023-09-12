@@ -20,7 +20,7 @@
 ## 2、拉取项目源码
 >>IM-Server源码中包含两个仓库，一个是外部仓库/im-server，一个是位于/im-server/cmd/Open-IM-SDK-Core的子仓库（用于web端使用）
 ```
-git clone http://47.243.225.90:3000/im/im-server.git 账号密码：找管理员索取
+git clone http://47.243.92.177:3000/im/im-server.git 账号密码：找管理员索取
 ```
 ## 3、修改配置文件参数
 ```

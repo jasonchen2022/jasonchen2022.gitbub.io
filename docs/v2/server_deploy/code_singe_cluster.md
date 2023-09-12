@@ -34,7 +34,7 @@
 #### （1）下载代码及编译
 
 ```
-git clone http://47.243.225.90:3000/im/im-server.git 账号密码：找管理员索取
+git clone http://47.243.92.177:3000/im/im-server.git 账号密码：找管理员索取
 cd im-server/script
 chmod +x *.sh
 ./batch_build_all_service.sh 

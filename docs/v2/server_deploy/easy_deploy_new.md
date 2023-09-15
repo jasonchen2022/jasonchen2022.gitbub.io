@@ -204,7 +204,7 @@ server {
                 proxy_set_header X-Forwarded-For $remote_addr;
                 proxy_pass http://im_msg_gateway/;
         }
-        location ^~/api/ { #10002 api
+        location ^~/msg_api/ { #10002 api
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection "Upgrade";
@@ -220,7 +220,7 @@ server {
                 proxy_set_header X-Forwarded-For $remote_addr;
                 proxy_pass http://im_jssdk_gateway/;
                }
-        location ^~/demo/ { # 10004 demo
+        location ^~/msg_demo/ { # 10004 demo
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection "Upgrade";
@@ -228,7 +228,7 @@ server {
                 proxy_set_header X-Forwarded-For $remote_addr;
                 proxy_pass http://im_demo/;
                }
-        location ^~/admin/ { #10006 admin
+        location ^~/msg_admin/ { #10006 admin
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection "Upgrade";
